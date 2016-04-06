@@ -32,8 +32,8 @@ public class FavouritesActivity extends AppCompatActivity implements WeatherApiR
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
+        // Inflate menu to add items to action bar if it is present.
         inflater.inflate(R.menu.options_menu, menu);
-
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -41,9 +41,6 @@ public class FavouritesActivity extends AppCompatActivity implements WeatherApiR
                 (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
-
-        searchView.setQueryHint(getString(R.string.search_hint));
-
 
         return true;
     }
