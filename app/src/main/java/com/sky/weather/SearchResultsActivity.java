@@ -34,6 +34,6 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
     @Override
     public void returnedData(Location output) {
-        Toast.makeText(getApplicationContext(), output.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), output.getDays().get(2).getTime(), Toast.LENGTH_SHORT).show();
     }
 }

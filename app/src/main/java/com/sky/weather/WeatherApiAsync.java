@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hac10 on 05/04/2016.
@@ -103,18 +105,31 @@ public class WeatherApiAsync extends AsyncTask<String, Void, Location> {
     private Location parseJson(String input){
 
         try {
-
             JSONObject inputObject = new JSONObject(input);
-
             JSONObject cityObject = inputObject.getJSONObject("city");
-
             JSONArray forecastArray = inputObject.getJSONArray("list");
 
             String cityName = cityObject.getString("name");
-            String tempList = forecastArray.toString();
 
-            Location location = new Location(cityName, tempList);
+            List <Days> daysList = new ArrayList<Days>();
 
+            for (int i = 0; i < forecastArray.length() ; i++) {
+
+                JSONObject dayJsonObject = new JSONObject(forecastArray.get(i).toString());
+                JSONObject windObject = dayJsonObject.getJSONObject("wind");
+
+                String time = dayJsonObject.getString("dt_txt");
+                String windSpeed = windObject.getString("speed");
+                String windDirection = windObject.getString("deg");
+                Days tempDay = new Days(time, windSpeed, windDirection);
+
+                daysList.add(tempDay);
+            }
+
+
+
+
+            Location location = new Location(cityName, daysList);
 
             return location;
 
