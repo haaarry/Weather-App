@@ -4,8 +4,9 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity implements WeatherApiResponse {
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -17,7 +18,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        //setContentView(R.layout.activity_search_results);
 
         handleIntent(getIntent());
     }
@@ -25,7 +26,14 @@ public class SearchResultsActivity extends AppCompatActivity {
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            //use the query to search your data somehow
+
+            WeatherApiAsync weatherApiAsync = new WeatherApiAsync(this);
+            weatherApiAsync.execute(query);
         }
+    }
+
+    @Override
+    public void returnedData(String output) {
+        Toast.makeText(getApplicationContext(), output, Toast.LENGTH_SHORT).show();
     }
 }

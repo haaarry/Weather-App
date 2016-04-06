@@ -15,9 +15,6 @@ public class FavouritesActivity extends AppCompatActivity implements WeatherApiR
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
-
-        WeatherApiAsync weatherApiAsync = new WeatherApiAsync(this);
-        weatherApiAsync.execute("leeds");
     }
 
     private void showText(String data){
