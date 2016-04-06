@@ -33,7 +33,7 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     }
 
     @Override
-    public void returnedData(String output) {
-        Toast.makeText(getApplicationContext(), output, Toast.LENGTH_SHORT).show();
+    public void returnedData(Location output) {
+        Toast.makeText(getApplicationContext(), output.getName(), Toast.LENGTH_SHORT).show();
     }
 }

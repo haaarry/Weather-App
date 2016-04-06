@@ -3,6 +3,10 @@ package com.sky.weather;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +17,7 @@ import java.net.URL;
 /**
  * Created by hac10 on 05/04/2016.
  */
-public class WeatherApiAsync extends AsyncTask<String, Void, String> {
+public class WeatherApiAsync extends AsyncTask<String, Void, Location> {
 
     public WeatherApiResponse delagate = null;
 
@@ -22,7 +26,7 @@ public class WeatherApiAsync extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected Location doInBackground(String... params) {
 
 
         String weatherJsonString = "WHATTT";
@@ -93,11 +97,37 @@ public class WeatherApiAsync extends AsyncTask<String, Void, String> {
                 }
             }
         }
-        return weatherJsonString;
+        return parseJson(weatherJsonString);
+    }
+
+    private Location parseJson(String input){
+
+        try {
+
+            JSONObject inputObject = new JSONObject(input);
+
+            JSONObject cityObject = inputObject.getJSONObject("city");
+
+            JSONArray forecastArray = inputObject.getJSONArray("list");
+
+            String cityName = cityObject.getString("name");
+            String tempList = forecastArray.toString();
+
+            Location location = new Location(cityName, tempList);
+
+
+            return location;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(Location s) {
         if(s !=null){
             delagate.returnedData(s);
         }

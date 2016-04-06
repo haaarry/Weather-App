@@ -22,8 +22,8 @@ public class FavouritesActivity extends AppCompatActivity implements WeatherApiR
     }
 
     @Override
-    public void returnedData(String output) {
-        Toast.makeText(this, output, Toast.LENGTH_SHORT).show();
+    public void returnedData(Location output) {
+        Toast.makeText(this, output.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
