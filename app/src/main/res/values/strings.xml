@@ -2,4 +2,5 @@
     <string name="app_name">Weather</string>
     <string name="search_title">Search</string>
     <string name="search_hint">Search location...</string>
+    <string name="add_favourite">Add to Favourites</string>
 </resources>
