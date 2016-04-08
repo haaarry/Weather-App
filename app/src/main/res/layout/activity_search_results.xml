@@ -3,27 +3,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="0dp"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    tools:context="com.sky.weather.SearchResultsActivity">
+    tools:context="com.sky.weather.SearchResultsActivity"
+    android:weightSum="1">
 
-    <TextView
-        android:textSize="50dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Wind Speed"
-        android:id="@+id/windSpeedTextView"/>
 
-    <TextView
-        android:textSize="20dp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Wind Direction"
-        android:id="@+id/windDirectionTextView"/>
+        android:background="@drawable/shadow"
+        android:orientation="vertical"
+        android:layout_weight="1.77">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/windSpeedTextView"
+                android:layout_width="186dp"
+                android:layout_height="match_parent"
+                android:paddingTop="50dp"
+                android:text="Speed"
+                android:textColor="@android:color/white"
+                android:textSize="50dp" />
+
+            <ImageView
+                android:layout_width="201dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/windDirectionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="15dp"
+            android:text="Wind Direction"
+            android:textColor="@android:color/white"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/currentDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/colorAccent"
+            android:paddingTop="5dp"
+            android:text="New Text"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="244dp"></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

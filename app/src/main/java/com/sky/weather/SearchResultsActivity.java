@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -16,6 +19,9 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
     private TextView windSpeedTextView;
     private TextView windDirectionTextView;
+    private RecyclerView forecastRecyclerView;
+    private  RecyclerAdapter adapter;
+    private ImageView imageView;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -31,11 +37,16 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
         handleIntent(getIntent());
 
+
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(0);
 
         windSpeedTextView = (TextView) findViewById(R.id.windSpeedTextView);
         windDirectionTextView = (TextView) findViewById(R.id.windDirectionTextView);
+        forecastRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+        imageView = (ImageView) findViewById(R.id.imageView);
     }
 
     private void handleIntent(Intent intent) {
@@ -57,9 +68,28 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
         List<Days> forecast = output.getDays();
 
+       // String temp [] = new String [] {"temp 1", "temp 2", "temp 3", "temp 4", "temp 5"};
+
         setTitle(cityTitle);
         windSpeedTextView.setText(forecast.get(0).getWindSpeed().toString());
         windDirectionTextView.setText(forecast.get(0).getWindDirection().toString());
+
+        //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, temp);
+
+
+
+        adapter = new RecyclerAdapter(this, forecast);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        forecastRecyclerView.setAdapter(adapter);
+        forecastRecyclerView.setLayoutManager(linearLayoutManager);
+        imageView.setImageResource(R.drawable.wind_speed_less1);
+
+        //forecastRecyclerView.setAdapter();
+
+        //forecastRecyclerView.setAdapter();
     }
 
     @Override
