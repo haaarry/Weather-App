@@ -10,6 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,7 +26,8 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     private RecyclerView forecastRecyclerView;
     private  RecyclerAdapter adapter;
     private ImageView windSpeedImageView;
-    private ImageView windDirectionBackgroundImageView;
+    private ImageView compassBgImageView;
+    private ImageView compassPointImageView;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -50,7 +54,8 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
         forecastRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         windSpeedImageView = (ImageView) findViewById(R.id.imageView);
-        windDirectionBackgroundImageView = (ImageView) findViewById(R.id.compassBackground);
+        compassBgImageView = (ImageView) findViewById(R.id.compassBackground);
+        compassPointImageView = (ImageView) findViewById(R.id.compass_pointer);
     }
 
     private void handleIntent(Intent intent) {
@@ -75,8 +80,8 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
        // String temp [] = new String [] {"temp 1", "temp 2", "temp 3", "temp 4", "temp 5"};
 
         setTitle(cityTitle);
-        windSpeedTextView.setText(forecast.get(0).getWindSpeed().toString());
-        windDirectionTextView.setText(forecast.get(0).getWindDirection().toString());
+        windSpeedTextView.setText(forecast.get(0).getWindSpeed());
+        windDirectionTextView.setText(forecast.get(0).getWindDirection());
 
         //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, temp);
 
@@ -93,6 +98,8 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
         currentDateTextView.setText(getString(R.string.last_updated
         ) + forecast.get(0).getTime());
+
+        setCompass(Float.parseFloat(forecast.get(0).getWindDirection()));
         //forecastRecyclerView.setAdapter();
 
         //forecastRecyclerView.setAdapter();
@@ -116,5 +123,22 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
             default:
                 return false;
         }
+    }
+
+    public void setCompass(float direction){
+        AnimationSet animSet = new AnimationSet(true);
+        animSet.setInterpolator(new DecelerateInterpolator());
+        animSet.setFillAfter(true);
+        animSet.setFillAfter(true);
+
+        final RotateAnimation rotateAnimation = new RotateAnimation(0.0f, direction,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+        rotateAnimation.setDuration(1000);
+        rotateAnimation.setFillAfter(true);
+        animSet.addAnimation(rotateAnimation);
+
+        compassPointImageView.setAnimation(animSet);
     }
 }

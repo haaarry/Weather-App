@@ -62,12 +62,24 @@
                 android:gravity="center_vertical"
                 android:paddingRight="10dp"/>
 
-            <ImageView
-                android:layout_width="166dp"
-                android:layout_height="match_parent"
-                android:id="@+id/compassBackground"
-                android:background="@drawable/compass_background"
-                android:gravity="top"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/compassBackground"
+                    android:background="@drawable/compass_background"
+                    android:gravity="top"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/compass_pointer"
+                    android:background="@drawable/compass_pointer"/>
+
+            </FrameLayout>
 
         </LinearLayout>
 
