@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -40,14 +42,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         ///String quant = "" +current.quantity;
         holder.dayTextView.setText(current.getTime());
         holder.windSpeedTextView.setText(current.getWindSpeed());
-        holder.windDirectionTextView.setText(current.getWindDirection());
+
+        //holder.windDirectionTextView.setText(current.getWindDirection());
 
 
         //holder.windSpeedTextView.setImageResource(current.iconId)
         //holder.quantityTV.setText(quant);//Set to quantity//THIS COULD BREAK IT
        // holder.quantityTV.setText(current.quantity.toString());
 
+            final RotateAnimation rotateAnimation = new RotateAnimation(0.0f, Float.parseFloat(current.getWindDirection()),
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                    RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+
+            rotateAnimation.setDuration(1000);
+            //animSet.addAnimation(rotateAnimation);
+
+            rotateAnimation.setRepeatCount(0);
+            rotateAnimation.setFillAfter(true);
+            holder.minCompassPointer.startAnimation(rotateAnimation);
+
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -57,7 +74,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
         TextView dayTextView;
         TextView windSpeedTextView;
-        TextView windDirectionTextView;
+        ImageView minCompassPointer;
+        //TextView windDirectionTextView;
         //ImageView imageV;
         //TextView quantityTV;
 
@@ -65,7 +83,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             super(itemView);
             dayTextView = (TextView) itemView.findViewById(R.id.forecastTimeTextView);
             windSpeedTextView =(TextView) itemView.findViewById(R.id.forecastWindSpeedTextView);
-            windDirectionTextView =(TextView) itemView.findViewById(R.id.forecastWindDirectionTextView);
+            minCompassPointer = (ImageView) itemView.findViewById(R.id.minCompassPointerImageView);
+            //windDirectionTextView =(TextView) itemView.findViewById(R.id.forecastWindDirectionTextView);
 
             //windSpeedTextView = (ImageView) itemView.findViewById(R.id.listIcon);
             //imageV.setOnLongClickListener(this);

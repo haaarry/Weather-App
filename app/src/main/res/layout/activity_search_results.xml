@@ -10,6 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sky.weather.SearchResultsActivity"
+    android:gravity="center_horizontal"
     android:weightSum="1">
 
 
@@ -96,22 +97,38 @@
                 android:text="Mph"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/currentDateTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:backgroundTint="@color/colorAccent"
-            android:paddingTop="5dp"
-            android:text="Current Date"
-            android:textColor="@android:color/white"/>
+            android:orientation="vertical"
+            android:paddingTop="15dp"
+            android:gravity="center_horizontal|bottom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"
+                android:id="@+id/cityNameTextView"
+                android:text="City Name"/>
+
+            <TextView
+                android:id="@+id/currentDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/colorAccent"
+                android:paddingTop="10dp"
+                android:text="Current Date"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
 
     </LinearLayout>
-
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="100dp"></android.support.v7.widget.RecyclerView>
+        android:layout_height="130dp"></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

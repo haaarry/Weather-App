@@ -22,11 +22,13 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     private TextView windSpeedTextView;
     private TextView windDirectionTextView;
     private TextView currentDateTextView;
+    private TextView cityNameTextView;
     private RecyclerView forecastRecyclerView;
     private  RecyclerAdapter adapter;
     private ImageView windSpeedImageView;
     private ImageView compassBgImageView;
     private ImageView compassPointImageView;
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -43,11 +45,12 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         handleIntent(getIntent());
 
 
-
+        setTitle("");
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(0);
 
+        cityNameTextView = (TextView) findViewById(R.id.cityNameTextView);
         windSpeedTextView = (TextView) findViewById(R.id.windSpeedTextView);
         windDirectionTextView = (TextView) findViewById(R.id.windDirectionTextView);
         currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
@@ -78,7 +81,6 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
        // String temp [] = new String [] {"temp 1", "temp 2", "temp 3", "temp 4", "temp 5"};
 
-        setTitle(cityTitle);
         windSpeedTextView.setText(forecast.get(0).getWindSpeed());
         windDirectionTextView.setText(forecast.get(0).getWindDirection());
 
@@ -94,6 +96,7 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         forecastRecyclerView.setAdapter(adapter);
         forecastRecyclerView.setLayoutManager(linearLayoutManager);
         currentDateTextView.setText(getString(R.string.last_updated) + forecast.get(0).getTime());
+        cityNameTextView.setText(cityTitle);
 
         setCompass(Float.parseFloat(forecast.get(0).getWindDirection()));
         //forecastRecyclerView.setAdapter();

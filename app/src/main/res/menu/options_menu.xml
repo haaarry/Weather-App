@@ -8,5 +8,4 @@
         android:icon="@android:drawable/ic_menu_search"
         appcompat:actionViewClass="android.support.v7.widget.SearchView"
         appcompat:showAsAction="always"/>
-
 </menu>
