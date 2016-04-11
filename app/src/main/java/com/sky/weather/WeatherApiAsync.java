@@ -31,7 +31,7 @@ public class WeatherApiAsync extends AsyncTask<String, Void, Location> {
     protected Location doInBackground(String... params) {
 
 
-        String weatherJsonString = "WHATTT";
+        String weatherJsonString = null;
 
         if (params.length == 0) {
             return null;
@@ -43,6 +43,7 @@ public class WeatherApiAsync extends AsyncTask<String, Void, Location> {
         final String MODE = "json";
         final String API_ID = "1936c74f84aed1b5d7d314fffdaf3175";
         final String COUNTRY_CODE = ",UK";
+        final String UNITS = "imperial";
 
         String city = params[0];
 
@@ -56,6 +57,7 @@ public class WeatherApiAsync extends AsyncTask<String, Void, Location> {
                     .appendPath("forecast")
                     .appendQueryParameter("q", city + COUNTRY_CODE)
                     .appendQueryParameter("mode", MODE)
+                    .appendQueryParameter("units", UNITS)
                     .appendQueryParameter("appid", API_ID);
 
             URL url = new URL(uriBuilder.toString());

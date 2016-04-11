@@ -16,29 +16,18 @@
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="309dp"
         android:background="@drawable/shadow"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1.00">
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
             android:padding="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/windSpeedTextView"
-                android:layout_width="186dp"
-                android:layout_height="match_parent"
-                android:paddingTop="20dp"
-                android:text="Speed"
-                android:textColor="@android:color/white"
-                android:textSize="50dp" />
-
-            <ImageView
-                android:layout_width="201dp"
-                android:layout_height="match_parent"
-                android:id="@+id/imageView"/>
         </LinearLayout>
 
 
@@ -46,66 +35,83 @@
         <LinearLayout
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="203dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/compass_size">
+
+                <ImageView
+                    android:layout_width="@dimen/compass_size"
+                    android:layout_height="@dimen/compass_size"
+                    android:id="@+id/compassBackground"
+                    android:background="@drawable/compass_background"
+                    android:gravity="top"
+                    android:scaleType="fitXY"/>
+
+                <ImageView
+                    android:layout_width="@dimen/compass_size"
+                    android:layout_height="@dimen/compass_size"
+                    android:id="@+id/compass_pointer"
+                    android:background="@drawable/compass_pointer"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/windDirectionTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:paddingTop="15dp"
+                android:paddingTop="5dp"
                 android:text="Wind Direction"
                 android:textColor="@android:color/white"
-                android:textSize="20dp"
+                android:textSize="10dp"
                 android:gravity="center_vertical"
-                android:paddingRight="10dp"/>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/compassBackground"
-                    android:background="@drawable/compass_background"
-                    android:gravity="top"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/compass_pointer"
-                    android:background="@drawable/compass_pointer"/>
-
-            </FrameLayout>
+                android:paddingRight="10dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="bottom"
+            android:gravity="center_horizontal"
             android:padding="5dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
             <TextView
-                android:id="@+id/currentDateTextView"
+                android:id="@+id/windSpeedTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:backgroundTint="@color/colorAccent"
+                android:layout_height="wrap_content"
                 android:paddingTop="5dp"
-                android:text="Current Date"
-                android:textColor="@android:color/white"/>
+                android:text="Speed"
+                android:textColor="@android:color/white"
+                android:textSize="50dp"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="Mph"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/currentDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/colorAccent"
+            android:paddingTop="5dp"
+            android:text="Current Date"
+            android:textColor="@android:color/white"/>
+
     </LinearLayout>
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="100dp"></android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

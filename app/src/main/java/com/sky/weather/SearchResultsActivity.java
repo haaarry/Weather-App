@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,7 +52,7 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         windDirectionTextView = (TextView) findViewById(R.id.windDirectionTextView);
         currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
         forecastRecyclerView = (RecyclerView) findViewById(R.id.recycler);
-        windSpeedImageView = (ImageView) findViewById(R.id.imageView);
+        //windSpeedImageView = (ImageView) findViewById(R.id.imageView);
         compassBgImageView = (ImageView) findViewById(R.id.compassBackground);
         compassPointImageView = (ImageView) findViewById(R.id.compass_pointer);
     }
@@ -94,10 +93,7 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
         forecastRecyclerView.setAdapter(adapter);
         forecastRecyclerView.setLayoutManager(linearLayoutManager);
-        windSpeedImageView.setImageResource(R.drawable.wind_speed_less1);
-
-        currentDateTextView.setText(getString(R.string.last_updated
-        ) + forecast.get(0).getTime());
+        currentDateTextView.setText(getString(R.string.last_updated) + forecast.get(0).getTime());
 
         setCompass(Float.parseFloat(forecast.get(0).getWindDirection()));
         //forecastRecyclerView.setAdapter();
@@ -127,18 +123,17 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
     public void setCompass(float direction){
         AnimationSet animSet = new AnimationSet(true);
-        animSet.setInterpolator(new DecelerateInterpolator());
-        animSet.setFillAfter(true);
-        animSet.setFillAfter(true);
+        //animSet.setInterpolator(new DecelerateInterpolator());
 
         final RotateAnimation rotateAnimation = new RotateAnimation(0.0f, direction,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 
         rotateAnimation.setDuration(1000);
-        rotateAnimation.setFillAfter(true);
-        animSet.addAnimation(rotateAnimation);
+        //animSet.addAnimation(rotateAnimation);
 
-        compassPointImageView.setAnimation(animSet);
+        rotateAnimation.setRepeatCount(0);
+        rotateAnimation.setFillAfter(true);
+        compassPointImageView.startAnimation(rotateAnimation);
     }
 }
