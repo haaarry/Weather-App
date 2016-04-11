@@ -3,4 +3,5 @@
     <string name="search_title">Search</string>
     <string name="search_hint">Search location...</string>
     <string name="add_favourite">Add to Favourites</string>
+    <string name="last_updated">Last updated at:\u0020</string>
 </resources>

@@ -19,9 +19,11 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
     private TextView windSpeedTextView;
     private TextView windDirectionTextView;
+    private TextView currentDateTextView;
     private RecyclerView forecastRecyclerView;
     private  RecyclerAdapter adapter;
-    private ImageView imageView;
+    private ImageView windSpeedImageView;
+    private ImageView windDirectionBackgroundImageView;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -45,8 +47,10 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
         windSpeedTextView = (TextView) findViewById(R.id.windSpeedTextView);
         windDirectionTextView = (TextView) findViewById(R.id.windDirectionTextView);
+        currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
         forecastRecyclerView = (RecyclerView) findViewById(R.id.recycler);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        windSpeedImageView = (ImageView) findViewById(R.id.imageView);
+        windDirectionBackgroundImageView = (ImageView) findViewById(R.id.compassBackground);
     }
 
     private void handleIntent(Intent intent) {
@@ -85,8 +89,10 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
         forecastRecyclerView.setAdapter(adapter);
         forecastRecyclerView.setLayoutManager(linearLayoutManager);
-        imageView.setImageResource(R.drawable.wind_speed_less1);
+        windSpeedImageView.setImageResource(R.drawable.wind_speed_less1);
 
+        currentDateTextView.setText(getString(R.string.last_updated
+        ) + forecast.get(0).getTime());
         //forecastRecyclerView.setAdapter();
 
         //forecastRecyclerView.setAdapter();
