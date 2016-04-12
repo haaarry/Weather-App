@@ -39,16 +39,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Days current = data.get(position);
-        ///String quant = "" +current.quantity;
         holder.dayTextView.setText(current.getTime());
         holder.windSpeedTextView.setText(current.getWindSpeed());
-
-        //holder.windDirectionTextView.setText(current.getWindDirection());
-
-
-        //holder.windSpeedTextView.setImageResource(current.iconId)
-        //holder.quantityTV.setText(quant);//Set to quantity//THIS COULD BREAK IT
-       // holder.quantityTV.setText(current.quantity.toString());
 
             final RotateAnimation rotateAnimation = new RotateAnimation(0.0f, Float.parseFloat(current.getWindDirection()),
                     RotateAnimation.RELATIVE_TO_SELF, 0.5f,
@@ -75,20 +67,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         TextView dayTextView;
         TextView windSpeedTextView;
         ImageView minCompassPointer;
-        //TextView windDirectionTextView;
-        //ImageView imageV;
-        //TextView quantityTV;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             dayTextView = (TextView) itemView.findViewById(R.id.forecastTimeTextView);
             windSpeedTextView =(TextView) itemView.findViewById(R.id.forecastWindSpeedTextView);
             minCompassPointer = (ImageView) itemView.findViewById(R.id.minCompassPointerImageView);
-            //windDirectionTextView =(TextView) itemView.findViewById(R.id.forecastWindDirectionTextView);
-
-            //windSpeedTextView = (ImageView) itemView.findViewById(R.id.listIcon);
-            //imageV.setOnLongClickListener(this);
-           // quantityTV = (TextView) itemView.findViewById(R.id.itemQuantTextView);
         }
 
 //        @Override

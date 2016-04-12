@@ -24,11 +24,10 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     private TextView currentDateTextView;
     private TextView cityNameTextView;
     private RecyclerView forecastRecyclerView;
-    private  RecyclerAdapter adapter;
-    private ImageView windSpeedImageView;
-    private ImageView compassBgImageView;
+    private RecyclerAdapter adapter;
     private ImageView compassPointImageView;
 
+    private Location currentLocation;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -55,9 +54,12 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         windDirectionTextView = (TextView) findViewById(R.id.windDirectionTextView);
         currentDateTextView = (TextView) findViewById(R.id.currentDateTextView);
         forecastRecyclerView = (RecyclerView) findViewById(R.id.recycler);
-        //windSpeedImageView = (ImageView) findViewById(R.id.imageView);
-        compassBgImageView = (ImageView) findViewById(R.id.compassBackground);
         compassPointImageView = (ImageView) findViewById(R.id.compass_pointer);
+
+        if(savedInstanceState != null){
+            currentLocation = savedInstanceState.getParcelable("currentLocation");
+            setLocationView();
+        }
     }
 
     private void handleIntent(Intent intent) {
@@ -71,37 +73,9 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
     @Override
     public void returnedData(Location output) {
-       // Toast.makeText(getApplicationContext(), output.getDays().get(2).getTime(), Toast.LENGTH_SHORT).show();
+        currentLocation = output;
+        setLocationView();
 
-
-
-        String cityTitle = output.getName();
-
-        List<Days> forecast = output.getDays();
-
-       // String temp [] = new String [] {"temp 1", "temp 2", "temp 3", "temp 4", "temp 5"};
-
-        windSpeedTextView.setText(forecast.get(0).getWindSpeed());
-        windDirectionTextView.setText(forecast.get(0).getWindDirection());
-
-        //ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, temp);
-
-
-
-        adapter = new RecyclerAdapter(this, forecast);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-        forecastRecyclerView.setAdapter(adapter);
-        forecastRecyclerView.setLayoutManager(linearLayoutManager);
-        currentDateTextView.setText(getString(R.string.last_updated) + forecast.get(0).getTime());
-        cityNameTextView.setText(cityTitle);
-
-        setCompass(Float.parseFloat(forecast.get(0).getWindDirection()));
-        //forecastRecyclerView.setAdapter();
-
-        //forecastRecyclerView.setAdapter();
     }
 
     @Override
@@ -124,6 +98,12 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("currentLocation", currentLocation);
+    }
+
     public void setCompass(float direction){
         AnimationSet animSet = new AnimationSet(true);
         //animSet.setInterpolator(new DecelerateInterpolator());
@@ -138,5 +118,27 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         rotateAnimation.setRepeatCount(0);
         rotateAnimation.setFillAfter(true);
         compassPointImageView.startAnimation(rotateAnimation);
+    }
+
+    public void setLocationView(){
+        String cityTitle = currentLocation.getName();
+
+        List<Days> forecast = currentLocation.getDays();
+
+        windSpeedTextView.setText(forecast.get(0).getWindSpeed());
+        windDirectionTextView.setText(forecast.get(0).getWindDirection());
+
+
+        adapter = new RecyclerAdapter(this, forecast);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        forecastRecyclerView.setAdapter(adapter);
+        forecastRecyclerView.setLayoutManager(linearLayoutManager);
+        currentDateTextView.setText(getString(R.string.last_updated) + forecast.get(0).getTime());
+        cityNameTextView.setText(cityTitle);
+
+        setCompass(Float.parseFloat(forecast.get(0).getWindDirection()));
     }
 }
