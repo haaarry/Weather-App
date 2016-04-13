@@ -1,7 +1,9 @@
 package com.sky.weather;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +30,9 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     private ImageView compassPointImageView;
 
     private Location currentLocation;
+    private String returnedJson;
 
-    //SharedPreferences sharedPreferences = this.getSharedPreferences("com.sky.weather", Context.MODE_PRIVATE);
+
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -42,6 +45,8 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+
+        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);//Attempt using stored data??
 
         handleIntent(getIntent());
 
@@ -89,8 +94,9 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
                 this.finish();
                 return true;
             case R.id.addFavourite:
-                //List<String> favourites = sharedPreferences.getStringSet("favourites");
-                //sharedPreferences.edit().putStringSet("favourites", )
+                SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(currentLocation.getName(), returnedJson);
                 return true;
             default:
                 return false;
@@ -145,6 +151,7 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     @Override
     public void returnedData(String output) {
         if(output !=null){
+            returnedJson = output;
             ParseJsonAsync parseJsonResponse = new ParseJsonAsync(this);
             parseJsonResponse.execute(output);
         }
