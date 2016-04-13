@@ -23,15 +23,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     private LayoutInflater inflater;
     List<Days> data = Collections.emptyList();
     Context context;
-    public RecyclerAdapter(Context context, List<Days> data){
+    int layout;
+    List<String> cityTitle;
+
+    public RecyclerAdapter(Context context, List<Days> data, int layout, List<String> cityTitle){
         inflater = LayoutInflater.from(context);
         this.data = data;
         this.context = context;
+        this.layout = layout;
+        this.cityTitle = cityTitle;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.forecast_view, parent, false);
+        View view = inflater.inflate(layout, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
@@ -41,6 +46,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         Days current = data.get(position);
         holder.dayTextView.setText(current.getTime());
         holder.windSpeedTextView.setText(current.getWindSpeed());
+
+        if(cityTitle !=null){
+            holder.forecastCityTitleTextView.setText(cityTitle.get(position));
+        }
 
             final RotateAnimation rotateAnimation = new RotateAnimation(0.0f, Float.parseFloat(current.getWindDirection()),
                     RotateAnimation.RELATIVE_TO_SELF, 0.5f,
@@ -67,12 +76,16 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         TextView dayTextView;
         TextView windSpeedTextView;
         ImageView minCompassPointer;
+        TextView forecastCityTitleTextView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             dayTextView = (TextView) itemView.findViewById(R.id.forecastTimeTextView);
             windSpeedTextView =(TextView) itemView.findViewById(R.id.forecastWindSpeedTextView);
             minCompassPointer = (ImageView) itemView.findViewById(R.id.minCompassPointerImageView);
+            if(cityTitle !=null){
+                forecastCityTitleTextView = (TextView) itemView.findViewById(R.id.favouritesCityTitleTextView);
+            }
         }
 
 //        @Override

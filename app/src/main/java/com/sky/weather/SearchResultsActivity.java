@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -94,9 +95,10 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
                 this.finish();
                 return true;
             case R.id.addFavourite:
-                SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(currentLocation.getName(), returnedJson);
+                editor.commit();
                 return true;
             default:
                 return false;
@@ -134,7 +136,7 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         windDirectionTextView.setText(forecast.get(0).getWindDirection());
 
 
-        adapter = new RecyclerAdapter(this, forecast);
+        adapter = new RecyclerAdapter(this, forecast, R.layout.forecast_view, null);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
