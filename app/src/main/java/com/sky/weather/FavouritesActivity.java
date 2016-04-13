@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.Toast;
 
-public class FavouritesActivity extends AppCompatActivity implements WeatherApiResponse{
+public class FavouritesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +21,6 @@ public class FavouritesActivity extends AppCompatActivity implements WeatherApiR
         Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void returnedData(Location output) {
-        Toast.makeText(this, output.getName(), Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

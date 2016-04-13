@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class SearchResultsActivity extends AppCompatActivity implements WeatherApiResponse {
+public class SearchResultsActivity extends AppCompatActivity implements WeatherApiResponse, ParseJsonResponse {
 
     private TextView windSpeedTextView;
     private TextView windDirectionTextView;
@@ -28,6 +28,8 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     private ImageView compassPointImageView;
 
     private Location currentLocation;
+
+    //SharedPreferences sharedPreferences = this.getSharedPreferences("com.sky.weather", Context.MODE_PRIVATE);
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -72,13 +74,6 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     }
 
     @Override
-    public void returnedData(Location output) {
-        currentLocation = output;
-        setLocationView();
-
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         // Inflate menu to add items to action bar if it is present.
@@ -92,6 +87,10 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         switch (item.getItemId()){
             case android.R.id.home:
                 this.finish();
+                return true;
+            case R.id.addFavourite:
+                //List<String> favourites = sharedPreferences.getStringSet("favourites");
+                //sharedPreferences.edit().putStringSet("favourites", )
                 return true;
             default:
                 return false;
@@ -140,5 +139,22 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
         cityNameTextView.setText(cityTitle);
 
         setCompass(Float.parseFloat(forecast.get(0).getWindDirection()));
+    }
+
+
+    @Override
+    public void returnedData(String output) {
+        if(output !=null){
+            ParseJsonAsync parseJsonResponse = new ParseJsonAsync(this);
+            parseJsonResponse.execute(output);
+        }
+    }
+
+    @Override
+    public void parsedJson(Location output) {
+        if(output !=null){
+            currentLocation = output;
+            setLocationView();
+        }
     }
 }
