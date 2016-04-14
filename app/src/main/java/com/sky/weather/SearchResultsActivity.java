@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class SearchResultsActivity extends AppCompatActivity implements WeatherApiResponse, ParseJsonResponse, FavouritesLongClickListener {
+public class SearchResultsActivity extends AppCompatActivity implements WeatherApiResponse, ParseJsonResponse{
 
     private TextView windSpeedTextView;
     private TextView windDirectionTextView;
@@ -77,6 +77,14 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
 
             WeatherApiAsync weatherApiAsync = new WeatherApiAsync(this);
             weatherApiAsync.execute(query);
+        } else{
+            String cityTitle = intent.getStringExtra("cityTitle");
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String locationInfo = sharedPreferences.getString(cityTitle, null);
+
+            ParseJsonAsync parseJsonResponse = new ParseJsonAsync(this);
+            parseJsonResponse.execute(locationInfo);
         }
     }
 
@@ -166,10 +174,5 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
             currentLocation = output;
             setLocationView();
         }
-    }
-
-    @Override
-    public void onLongClickItem(String cityTitle, int position) {
-
     }
 }

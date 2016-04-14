@@ -21,12 +21,17 @@ import java.util.List;
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>{
 
+    public interface ItemClickListener {
+        void onLongClickItem(String cityTitle, int position);
+        void onClickItem(String cityTitle);
+    }
+
     private LayoutInflater inflater;
     List<Days> data = Collections.emptyList();
     Context context;
     int layout;
     List<String> cityTitle;
-
+    private ItemClickListener clickListener = null;
 
     public RecyclerAdapter(Context context, List<Days> data, int layout, List<String> cityTitle){
         inflater = LayoutInflater.from(context);
@@ -36,16 +41,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         this.cityTitle = cityTitle;
     }
 
+    public void setClickListener(ItemClickListener listener){
+        this.clickListener = listener;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(layout, parent, false);
-        MyViewHolder holder = new MyViewHolder(view, (FavouritesLongClickListener) context);
+        MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Days current = data.get(position);
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        final Days current = data.get(position);
         holder.dayTextView.setText(current.getTime());
         holder.windSpeedTextView.setText(current.getWindSpeed());
 
@@ -64,10 +73,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             rotateAnimation.setFillAfter(true);
             holder.minCompassPointer.startAnimation(rotateAnimation);
 
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clickListener != null){
+                    clickListener.onClickItem(cityTitle.get(position));
+                }
+            }
+        });
+
+        holder.rootView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(clickListener != null){
+                    clickListener.onLongClickItem(cityTitle.get(position), position);
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -75,36 +101,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
 
+    class MyViewHolder extends RecyclerView.ViewHolder {
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
-        private FavouritesLongClickListener delagate =null;
+
+        View rootView;
         TextView dayTextView;
         TextView windSpeedTextView;
         ImageView minCompassPointer;
         TextView forecastCityTitleTextView;
 
 
-        public MyViewHolder(View itemView, FavouritesLongClickListener delagate) {
+        public MyViewHolder(View itemView) {
             super(itemView);
+            rootView = itemView;
             dayTextView = (TextView) itemView.findViewById(R.id.forecastTimeTextView);
             windSpeedTextView =(TextView) itemView.findViewById(R.id.forecastWindSpeedTextView);
             minCompassPointer = (ImageView) itemView.findViewById(R.id.minCompassPointerImageView);
             if(cityTitle !=null){
                 forecastCityTitleTextView = (TextView) itemView.findViewById(R.id.favouritesCityTitleTextView);
             }
-
-            itemView.setOnLongClickListener(this);
-            this.delagate = delagate;
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-
-            int temp = getAdapterPosition();
-
-            delagate.onLongClickItem(cityTitle.get(temp), temp);
-
-            return false;
         }
     }
 }

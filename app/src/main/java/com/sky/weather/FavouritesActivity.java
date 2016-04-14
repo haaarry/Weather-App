@@ -2,6 +2,7 @@ package com.sky.weather;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class FavouritesActivity extends AppCompatActivity implements ParseJsonResponse, FavouritesLongClickListener{
+public class FavouritesActivity extends AppCompatActivity implements ParseJsonResponse, RecyclerAdapter.ItemClickListener {
 
     List<String> faves = new ArrayList<String>();
 
@@ -50,6 +51,7 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
     public void setView(){
         favouritesRecycler = (RecyclerView) findViewById(R.id.favouritesRecycler);
         adapter = new RecyclerAdapter(this, favouritesCurrentDays, R.layout.favourite_view, faves);
+        adapter.setClickListener(this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -88,6 +90,7 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
     @Override
     protected void onResume() {
         super.onResume();
+        setView();
     }
 
 
@@ -102,7 +105,13 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
         favouritesCurrentDays.remove(position);
         faves.remove(position);
         adapter.notifyItemRemoved(position);
+    }
 
-        //adapter.notifyDataSetChanged();
+    @Override
+    public void onClickItem(String cityTitle) {
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+
+        intent.putExtra("cityTitle", cityTitle);
+        startActivity(intent);
     }
 }
