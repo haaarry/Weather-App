@@ -3,6 +3,7 @@ package com.sky.weather;
 /**
  * Created by hac10 on 07/04/2016.
  */
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     int layout;
     List<String> cityTitle;
 
+
     public RecyclerAdapter(Context context, List<Days> data, int layout, List<String> cityTitle){
         inflater = LayoutInflater.from(context);
         this.data = data;
@@ -37,7 +39,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(layout, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
+        MyViewHolder holder = new MyViewHolder(view, (FavouritesLongClickListener) context);
         return holder;
     }
 
@@ -72,13 +74,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         return data.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener{
+
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+        private FavouritesLongClickListener delagate =null;
         TextView dayTextView;
         TextView windSpeedTextView;
         ImageView minCompassPointer;
         TextView forecastCityTitleTextView;
 
-        public MyViewHolder(View itemView) {
+
+        public MyViewHolder(View itemView, FavouritesLongClickListener delagate) {
             super(itemView);
             dayTextView = (TextView) itemView.findViewById(R.id.forecastTimeTextView);
             windSpeedTextView =(TextView) itemView.findViewById(R.id.forecastWindSpeedTextView);
@@ -86,16 +92,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             if(cityTitle !=null){
                 forecastCityTitleTextView = (TextView) itemView.findViewById(R.id.favouritesCityTitleTextView);
             }
-        }
 
-//        @Override
-//        public void onClick(View v) {
-//            Toast.makeText(context, ""+getPosition(), Toast.LENGTH_SHORT).show();
-//        }
+            itemView.setOnLongClickListener(this);
+            this.delagate = delagate;
+        }
 
         @Override
         public boolean onLongClick(View v) {
 
+            int temp = getAdapterPosition();
+
+            delagate.onLongClickItem(cityTitle.get(temp), temp);
 
             return false;
         }

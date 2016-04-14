@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class SearchResultsActivity extends AppCompatActivity implements WeatherApiResponse, ParseJsonResponse {
+public class SearchResultsActivity extends AppCompatActivity implements WeatherApiResponse, ParseJsonResponse, FavouritesLongClickListener {
 
     private TextView windSpeedTextView;
     private TextView windDirectionTextView;
@@ -46,6 +46,7 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
+
 
         SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);//Attempt using stored data??
 
@@ -165,5 +166,10 @@ public class SearchResultsActivity extends AppCompatActivity implements WeatherA
             currentLocation = output;
             setLocationView();
         }
+    }
+
+    @Override
+    public void onLongClickItem(String cityTitle, int position) {
+
     }
 }

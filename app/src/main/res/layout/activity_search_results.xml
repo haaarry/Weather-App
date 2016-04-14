@@ -16,6 +16,7 @@
 
     <LinearLayout
         android:id="@+id/header"
+        android:elevation="3sp"
         android:layout_width="match_parent"
         android:layout_height="309dp"
         android:background="@drawable/shadow"

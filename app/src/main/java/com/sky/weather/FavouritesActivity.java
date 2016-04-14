@@ -16,12 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class FavouritesActivity extends AppCompatActivity implements ParseJsonResponse{
+public class FavouritesActivity extends AppCompatActivity implements ParseJsonResponse, FavouritesLongClickListener{
 
     List<String> faves = new ArrayList<String>();
 
     List<Location> favouriteLocations = new ArrayList<Location>();
     List<Days> favouritesCurrentDays = new ArrayList<Days>();
+    RecyclerView favouritesRecycler;
+    RecyclerAdapter adapter;
+
 
     //ListView listView;
 
@@ -45,14 +48,15 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
     }
 
     public void setView(){
-        RecyclerView favouritesRecycler = (RecyclerView) findViewById(R.id.favouritesRecycler);
-        RecyclerAdapter adapter = new RecyclerAdapter(this, favouritesCurrentDays, R.layout.favourite_view, faves);
+        favouritesRecycler = (RecyclerView) findViewById(R.id.favouritesRecycler);
+        adapter = new RecyclerAdapter(this, favouritesCurrentDays, R.layout.favourite_view, faves);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         favouritesRecycler.setAdapter(adapter);
         favouritesRecycler.setLayoutManager(linearLayoutManager);
+
     }
 
     @Override
@@ -79,5 +83,26 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
 
         favouritesCurrentDays.add(currentDay);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+    @Override
+    public void onLongClickItem(String cityTitle, int position) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.remove(cityTitle);
+        editor.commit();
+
+        favouritesCurrentDays.remove(position);
+        faves.remove(position);
+        adapter.notifyItemRemoved(position);
+
+        //adapter.notifyDataSetChanged();
     }
 }
