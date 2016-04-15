@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class FavouritesActivity extends AppCompatActivity implements ParseJsonResponse, RecyclerAdapter.ItemClickListener {
 
-    List<String> faves = new ArrayList<String>();
+    List<String> favourtieCityTitles = new ArrayList<String>();
 
     List<Location> favouriteLocations = new ArrayList<Location>();
     List<Days> favouritesCurrentDays = new ArrayList<Days>();
@@ -27,30 +27,20 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
     RecyclerAdapter adapter;
 
 
-    //ListView listView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
-        //listView = (ListView) findViewById(R.id.favouritesListView);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        Map<String, ?> allEntries = sharedPreferences.getAll();
-
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()){
-            faves.add(entry.getKey());
-            ParseJsonAsync parseJsonAsync = new ParseJsonAsync(this);
-            parseJsonAsync.execute(entry.getValue().toString());
-        }
+        setLists();
 
         setView();
+
     }
 
     public void setView(){
         favouritesRecycler = (RecyclerView) findViewById(R.id.favouritesRecycler);
-        adapter = new RecyclerAdapter(this, favouritesCurrentDays, R.layout.favourite_view, faves);
+        adapter = new RecyclerAdapter(this, favouritesCurrentDays, R.layout.favourite_view, favourtieCityTitles);
         adapter.setClickListener(this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -80,19 +70,16 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
     @Override
     public void parsedJson(Location output) {
         favouriteLocations.add(output);
-
         Days currentDay = output.getDays().get(0);
-
         favouritesCurrentDays.add(currentDay);
-
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        setView();
+    protected void onRestart() {
+        super.onRestart();
+        updateLists();
     }
-
 
     @Override
     public void onLongClickItem(String cityTitle, int position) {
@@ -103,7 +90,7 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
         editor.commit();
 
         favouritesCurrentDays.remove(position);
-        faves.remove(position);
+        favourtieCityTitles.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
@@ -114,4 +101,24 @@ public class FavouritesActivity extends AppCompatActivity implements ParseJsonRe
         intent.putExtra("cityTitle", cityTitle);
         startActivity(intent);
     }
+
+    public void setLists(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Map<String, ?> allEntries = sharedPreferences.getAll();
+
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()){
+                favourtieCityTitles.add(entry.getKey());
+                ParseJsonAsync parseJsonAsync = new ParseJsonAsync(this);
+                parseJsonAsync.execute(entry.getValue().toString());
+        }
+    }
+
+    public void updateLists(){
+        favouriteLocations.clear();
+        favourtieCityTitles.clear();
+        favouritesCurrentDays.clear();
+        setLists();
+    }
+
 }
